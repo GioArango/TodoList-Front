@@ -1,0 +1,37 @@
+<mxfile host="65bd71144e">
+    <diagram id="UhukRhicfIGEvi9RcweF" name="Page-1">
+        <mxGraphModel dx="569" dy="480" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="10" width="560" height="560" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Search todo" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="240" width="520" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Form ToDo" style="whiteSpace=wrap;html=1;resizeWidth=1;resizeHeight=1;imageAspect=1;recursiveResize=1;expand=1;resizable=1;movable=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;" vertex="1" parent="1">
+                    <mxGeometry x="70" y="50" width="460" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="ToDo name" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="70" width="440" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Description" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="105" width="440" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Submit" style="rounded=1;fillColor=#0057D8;strokeColor=none;html=1;fontColor=#ffffff;align=center;verticalAlign=middle;fontStyle=0;fontSize=12;sketch=0;" vertex="1" parent="1">
+                    <mxGeometry x="450" y="170" width="70" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="ToDo" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="280" width="170" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="In Progress" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="215" y="280" width="170" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Done" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="280" width="170" height="250" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
