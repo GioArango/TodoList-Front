@@ -1,0 +1,6 @@
+export const ACTION_TYPES = {
+    SET_TODOS: 'SET_TODOS',
+    CREATE_TODO: 'CREATE_TODO',
+    UPDATE_TODO: 'UPDATE_TODO',
+    DELETE_TODO: 'DELETE_TODO'
+} as const;

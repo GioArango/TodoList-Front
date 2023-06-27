@@ -1,9 +1,14 @@
+import { AppContext } from '@/context/AppContext';
 import { Delete, Done, Edit, PlayArrow } from '@mui/icons-material';
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material';
+import { useContext } from 'react';
 
 export const Todo = () => {
+    const {state} = useContext(AppContext);
+    console.log('STATE: ', state);
+    
     return (
-        <Box sx={{ m: 1 }}>
+        <Box sx={{ m: 1, boxShadow: 2 }}>
             <Card sx={{ display: 'flex' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flex: '1 0 auto' }}>

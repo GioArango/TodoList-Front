@@ -17,20 +17,36 @@ const Todos = () => {
       <Grid container xs={12} sx={{ mb: 2 }}>
         <SearchTodo />
       </Grid>
-      <Grid container gap={1}>
-        <Grid xs={12} md={3.95} sx={{ backgroundColor: '#E6E6E6', width: '100%' }}>
-          <Typography variant="h6" color={'#333333'}>Por hacer</Typography>
-          <Todo />
+      <Grid container spacing={2}>
+        <Grid xs={12} md={4}>
+          <Grid container direction="column" sx={{ backgroundColor: '#E6E6E6', width: '100%' }}>
+            <Grid>
+              <Typography variant="h6" color="#333333">Por hacer</Typography>
+            </Grid>
+            <Grid>
+              <Todo />
+            </Grid>
+          </Grid>
         </Grid>
-
-        <Grid xs={12} md={3.95} sx={{ backgroundColor: '#FFCC99', width: '100%' }}>
-          <Typography variant="h6" color={'#333333'}>En progreso</Typography>
-          <Todo />
+        <Grid xs={12} md={4}>
+          <Grid container direction="column" sx={{ backgroundColor: '#FFCC99', width: '100%' }}>
+            <Grid>
+              <Typography variant="h6" color="#333333">En progreso</Typography>
+            </Grid>
+            <Grid>
+              <Todo />
+            </Grid>
+          </Grid>
         </Grid>
-
-        <Grid xs={12} md={3.95} sx={{ backgroundColor: '#66CC99', width: '100%' }}>
-          <Typography variant="h6" color={'#333333'}>Terminado</Typography>
-          <Todo />
+        <Grid xs={12} md={4}>
+          <Grid container direction="column" sx={{ backgroundColor: '#66CC99', width: '100%' }}>
+            <Grid>
+              <Typography variant="h6" color="#333333">Terminado</Typography>
+            </Grid>
+            <Grid>
+              <Todo />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </>
