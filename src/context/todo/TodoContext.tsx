@@ -5,4 +5,4 @@ export type TodoContextProps = {
     state: TodoState
 }
 
-export const AppContext = createContext<TodoContextProps>({} as TodoContextProps);
+export const TodoContext = createContext<TodoContextProps>({} as TodoContextProps);

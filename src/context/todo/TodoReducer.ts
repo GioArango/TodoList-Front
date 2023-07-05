@@ -1,6 +1,6 @@
 import { ActionType, TodoState } from "@/models";
 
-export const AppReducer = (state: TodoState, action: ActionType): TodoState => {
+export const TodoReducer = (state: TodoState, action: ActionType): TodoState => {
     switch (action.type) {
         case 'SET_TODOS':
             return {

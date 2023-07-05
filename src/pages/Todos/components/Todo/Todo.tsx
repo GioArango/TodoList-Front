@@ -1,10 +1,10 @@
-import { AppContext } from '@/context/AppContext';
+import { TodoContext } from '@/context/todo/TodoContext';
 import { Delete, Done, Edit, PlayArrow } from '@mui/icons-material';
 import { Box, Button, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useContext } from 'react';
 
 export const Todo = () => {
-    const {state} = useContext(AppContext);
+    const {state} = useContext(TodoContext);
     console.log('STATE: ', state);
     
     return (

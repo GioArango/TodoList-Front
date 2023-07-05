@@ -1,5 +1,7 @@
+import { AuthContext } from "@/context/auth/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, TextField, Typography, Unstable_Grid2 as Grid, Alert } from "@mui/material"
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom"
 import { z } from "zod"
@@ -26,6 +28,8 @@ type FormData = z.infer<typeof schema>;
 
 export const Register = () => {
 
+    const { registerUser } = useContext(AuthContext);
+
     const {
         register,
         handleSubmit,
@@ -41,6 +45,7 @@ export const Register = () => {
 
     const onSubmitForm = (data: FormData) => {
         console.log(data);
+        registerUser(data);
     }
 
     return (
