@@ -3,14 +3,14 @@ import { createTheme } from '@mui/material'
 export const mainTheme = createTheme({
   palette: {
     primary: {
-      main: '#00D5A7'
+      main: '#2D4356'
     },
     secondary: {
-      main: '#808080',
-      light: '#f2f2f2'
+      main: '#435B66',
+      light: '#9DB2BF'
     },
     error: {
-      main: '#E53966'
+      main: '#CD1818'
     }
   },
   components : {
@@ -18,7 +18,7 @@ export const mainTheme = createTheme({
       styleOverrides : {
         root : {
           '&.MuiAlert-error': {
-            backgroundColor: '#E53966',
+            backgroundColor: '#CD1818',
             color: '#fff',
           },
           '&.MuiAlert-success': {

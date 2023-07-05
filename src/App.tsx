@@ -1,14 +1,14 @@
 
-import './App.css';
-import { AppProvider } from './context/AppProvider';
-import { Todos } from './pages';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './router';
+import { AppTheme } from './theme';
 
 function App() {
 
   return (
-    <AppProvider>
-      <Todos />
-    </AppProvider>
+    <AppTheme>
+      <RouterProvider router={router} />
+    </AppTheme>
   )
 }
 
