@@ -1,10 +1,11 @@
+import { PATHS } from "@/constants/Paths";
 import { AuthContext } from "@/context/auth/AuthContext";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField, Typography, Unstable_Grid2 as Grid, Alert } from "@mui/material"
+import { Alert, Button, Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom"
-import { z } from "zod"
+import { Link } from "react-router-dom";
+import { z } from "zod";
 
 const schema = z.object({
     name: z
@@ -49,86 +50,90 @@ export const Register = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmitForm)}>
-            <Grid container >
-                <Grid xs={12} sx={{ mt: 2 }}>
-                    <TextField
-                        label="Nombre completo"
-                        type="text"
-                        placeholder="Tu nombre"
-                        fullWidth
-                        {...register("name")}
-                    />
-                    {
-                        errors?.name?.message &&
-                        <Alert severity='error' sx={{ my: '5px' }}>
-                            {errors?.name?.message}
-                        </Alert>
-                    }
-                </Grid>
+        <>
+            <Typography variant="h5" marginBottom={1}>Registro de usuarios</Typography>
 
-                <Grid xs={12} sx={{ mt: 2 }}>
-                    <TextField
-                        label="Correo"
-                        type="email"
-                        placeholder="email@email.com"
-                        fullWidth
-                        {...register("email")}
-                    />
-                    {
-                        errors?.email?.message &&
-                        <Alert severity='error' sx={{ my: '5px' }}>
-                            {errors?.email?.message}
-                        </Alert>
-                    }
-                </Grid>
-
-                <Grid xs={12} sx={{ mt: 2 }}>
-                    <TextField
-                        label="Contraseña"
-                        type="password"
-                        placeholder="Contraseña"
-                        fullWidth
-                        {...register("password")}
-                    />
-                    {
-                        errors?.password?.message &&
-                        <Alert severity='error' sx={{ my: '5px' }}>
-                            {errors?.password?.message}
-                        </Alert>
-                    }
-                </Grid>
-
-                <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
-                    <Grid
-
-                        xs={12}
-                    // display={ !!errorMessage ? '' : 'none'}
-                    >
-                        <Alert severity='error'>
-                            {/* { errorMessage } */}
-                        </Alert>
-                    </Grid>
-                    <Grid xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button
-                            // disabled={ isCheckingAuthentication } 
-                            variant='contained'
+            <form onSubmit={handleSubmit(onSubmitForm)}>
+                <Grid container >
+                    <Grid xs={12} sx={{ mt: 2 }}>
+                        <TextField
+                            label="Nombre completo"
+                            type="text"
+                            placeholder="Tu nombre"
                             fullWidth
-                            type="submit"
-                        >
-                            Crear cuenta
-                        </Button>
+                            {...register("name")}
+                        />
+                        {
+                            errors?.name?.message &&
+                            <Alert severity='error' sx={{ my: '5px' }}>
+                                {errors?.name?.message}
+                            </Alert>
+                        }
                     </Grid>
-                </Grid>
 
-                <Grid container direction='row' justifyContent='end'>
-                    <Typography sx={{ mr: 1 }}>¿Ya tienes cuenta?</Typography>
-                    {/* <Link component={RouterLink} color='inherit' to='/auth/login'>
-              Ingresar
-            </Link> */}
-                </Grid>
+                    <Grid xs={12} sx={{ mt: 2 }}>
+                        <TextField
+                            label="Correo"
+                            type="email"
+                            placeholder="email@email.com"
+                            fullWidth
+                            {...register("email")}
+                        />
+                        {
+                            errors?.email?.message &&
+                            <Alert severity='error' sx={{ my: '5px' }}>
+                                {errors?.email?.message}
+                            </Alert>
+                        }
+                    </Grid>
 
-            </Grid>
-        </form>
+                    <Grid xs={12} sx={{ mt: 2 }}>
+                        <TextField
+                            label="Contraseña"
+                            type="password"
+                            placeholder="Contraseña"
+                            fullWidth
+                            {...register("password")}
+                        />
+                        {
+                            errors?.password?.message &&
+                            <Alert severity='error' sx={{ my: '5px' }}>
+                                {errors?.password?.message}
+                            </Alert>
+                        }
+                    </Grid>
+
+                    <Grid container spacing={2} xs={12} sx={{ mb: 2, mt: 1 }}>
+                        {/* <Grid
+
+                            xs={12}
+                            display={ !!errorMessage ? '' : 'none'}
+                        >
+                            <Alert severity='error'>
+                                { errorMessage }
+                            </Alert>
+                        </Grid> */}
+                        <Grid xs={12} sm={12}>
+                            <Button
+                                // disabled={ isCheckingAuthentication } 
+                                variant='contained'
+                                fullWidth
+                                type="submit"
+                            >
+                                Crear cuenta
+                            </Button>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container direction='row' justifyContent='end'>
+                        <Typography sx={{ mr: 1 }}>¿Ya tienes cuenta?</Typography>
+                        <Link color='inherit' to={PATHS.LOGIN}>
+                            Ingresar
+                        </Link>
+                    </Grid>
+
+                </Grid>
+            </form>
+        </>
     )
 }

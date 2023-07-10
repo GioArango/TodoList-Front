@@ -1,8 +1,10 @@
+import { PATHS } from "@/constants/Paths";
 import { mainTheme } from "@/theme";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Google } from "@mui/icons-material"
 import { Button, TextField, Typography, Unstable_Grid2 as Grid, Alert } from "@mui/material"
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { z } from "zod"
 
 const schema = z.object({
@@ -23,10 +25,10 @@ type FormData = z.infer<typeof schema>;
 
 export const Login = () => {
 
-    const { 
-        register, 
-        handleSubmit, 
-        formState: { errors } 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
     } = useForm<FormData>({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -56,7 +58,7 @@ export const Login = () => {
                             errors?.email?.message &&
                             <Alert severity='error' sx={{ my: '5px' }}>
                                 {errors?.email?.message}
-                            </Alert>                            
+                            </Alert>
                         }
                         {/* <Typography variant="caption" color={mainTheme.palette.error.main}></Typography> */}
                     </Grid>
@@ -73,12 +75,12 @@ export const Login = () => {
                             errors?.password?.message &&
                             <Alert severity='error' sx={{ my: '5px' }}>
                                 {errors?.password?.message}
-                            </Alert>                            
+                            </Alert>
                         }
                         {/* <Typography variant="caption" color={mainTheme.palette.error.main}>{errors?.password?.message}</Typography> */}
                     </Grid>
 
-                    <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+                    <Grid container spacing={2} sm={12} sx={{ mb: 2, mt: 1 }}>
                         <Grid xs={12} sm={6}>
                             <Button
                                 // disabled={isAuthenticating}
@@ -108,16 +110,13 @@ export const Login = () => {
                         xs={12}
                     // display={ !!errorMessage ? '' : 'none'}            
                     >
-                        <Alert severity='error' sx={{ mb: '5px' }}>
-                            {/* { errorMessage } */}
-                        </Alert>
+                    <Grid container direction='row' justifyContent='end'>
+                        <Link color='inherit' to={PATHS.REGISTER}>
+                            Crear una cuenta
+                        </Link>
+                    </Grid>
                     </Grid>
 
-                    <Grid container direction='row' justifyContent='end'>
-                        {/* <Link component={RouterLink} color='inherit' to='/auth/register'>
-              Crear una cuenta
-            </Link> */}
-                    </Grid>
 
                 </Grid>
             </form>

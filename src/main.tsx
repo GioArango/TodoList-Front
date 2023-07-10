@@ -7,13 +7,16 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import { AuthProvider } from './context/auth/AuthProvider.tsx';
 import { TodoProvider } from './context/todo/TodoProvider.tsx';
+import { HelperProvider } from './context/helper/HelperProvider.tsx';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
-  <AuthProvider>
-    <TodoProvider>
-      <App />
-    </TodoProvider>
-  </AuthProvider>
+  <HelperProvider>
+    <AuthProvider>
+      <TodoProvider>
+        <App />
+      </TodoProvider>
+    </AuthProvider>
+  </HelperProvider>
   // </React.StrictMode>,
 )

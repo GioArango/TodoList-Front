@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { mainTheme } from "./";
 
 interface Props {
-    children: ReactElement;
+    children: ReactElement | ReactElement[];
 }
 
 export const AppTheme = ({children}: Props) => {
