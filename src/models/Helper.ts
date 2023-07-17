@@ -1,7 +1,7 @@
 import { AlertColor } from "@mui/material";
 
 export interface Alert {
-    message: string;
+    message: string | undefined;
     severity: AlertColor | undefined;
 }
 

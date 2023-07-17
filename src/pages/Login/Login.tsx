@@ -1,11 +1,12 @@
 import { PATHS } from "@/constants/Paths";
-import { mainTheme } from "@/theme";
+import { AuthContext } from "@/context/auth/AuthContext";
+import { saveDataInSessionStorage } from "@/helpers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Google } from "@mui/icons-material"
-import { Button, TextField, Typography, Unstable_Grid2 as Grid, Alert } from "@mui/material"
+import { Alert, Button, Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { z } from "zod"
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 const schema = z.object({
     email: z
@@ -25,6 +26,9 @@ type FormData = z.infer<typeof schema>;
 
 export const Login = () => {
 
+    const {authUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const {
         register,
         handleSubmit,
@@ -37,8 +41,17 @@ export const Login = () => {
         }
     })
 
-    const onSubmitForm = (formData: FormData) => {
+    const onSubmitForm = async(formData: FormData) => {
         console.log(formData);
+        const { isSuccess, ...rest } = await authUser(formData);
+
+        console.log('LOGIN', rest);
+
+        if ( !isSuccess ) {
+            return;
+        }
+        saveDataInSessionStorage('todo/auth', rest);
+        navigate(PATHS.TODO);
     }
 
     return (
@@ -81,7 +94,7 @@ export const Login = () => {
                     </Grid>
 
                     <Grid container spacing={2} sm={12} sx={{ mb: 2, mt: 1 }}>
-                        <Grid xs={12} sm={6}>
+                        <Grid xs={12} sm={12}>
                             <Button
                                 // disabled={isAuthenticating}
                                 variant='contained'
@@ -89,17 +102,6 @@ export const Login = () => {
                                 type="submit"
                             >
                                 Login
-                            </Button>
-                        </Grid>
-
-                        <Grid xs={12} sm={6}>
-                            <Button
-                                // disabled={isAuthenticating} 
-                                variant='contained'
-                                fullWidth
-                            >
-                                <Google />
-                                <Typography sx={{ ml: 1 }}>Google</Typography>
                             </Button>
                         </Grid>
 

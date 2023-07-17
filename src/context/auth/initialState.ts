@@ -5,5 +5,6 @@ export const AUTH_INITIAL_STATE: AuthState = {
     email: '',
     token: '',
     uid: '',
-    isAuthenticated: false
+    isAuthenticated: false,
+    isActive: false
 }

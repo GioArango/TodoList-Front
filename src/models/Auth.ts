@@ -6,12 +6,17 @@ export interface AuthState {
     token: string | null;
     uid: string | null;
     isAuthenticated: boolean;
+    isActive: boolean;
 }
 
-export interface AuthDto {
+export interface UserAuthDto {
     email: string;
     password: string;
-    token?: string;
-    uid?: string;
-    isAuthenticated?: boolean;
+}
+
+export interface UserAuthenticated {
+    email: string | null;
+    uid: string;
+    token: string;
+    isSuccess?: boolean;
 }

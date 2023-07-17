@@ -1,4 +1,4 @@
-import { Alert, AuthDto, Todo } from ".";
+import { Alert, Todo, UserAuthenticated } from ".";
 
 export type ActionType = 
 | { type: 'SET_TODOS', payload: Todo  }
@@ -7,8 +7,8 @@ export type ActionType =
 | { type: 'DELETE_TODO', payload: { id: string } }
 
 export type AuthType = 
-| { type: 'LOGIN', payload: AuthDto  }
-| { type: 'REGISTER', payload: AuthDto }
+| { type: 'LOGIN', payload: UserAuthenticated  }
+| { type: 'REGISTER', payload: { email: string | null } }
 | { type: 'LOGOUT' }
 
 export type HelperType =

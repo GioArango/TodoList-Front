@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, Button, Unstable_Grid2 as Grid, TextField, Typography } from "@mui/material";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 const schema = z.object({
@@ -30,6 +30,7 @@ type FormData = z.infer<typeof schema>;
 export const Register = () => {
 
     const { registerUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const {
         register,
@@ -44,9 +45,12 @@ export const Register = () => {
         }
     })
 
-    const onSubmitForm = (data: FormData) => {
+    const onSubmitForm = async(data: FormData) => {
         console.log(data);
-        registerUser(data);
+        const resp = await registerUser(data);
+        if ( resp ) {
+            navigate(PATHS.LOGIN);
+        }
     }
 
     return (

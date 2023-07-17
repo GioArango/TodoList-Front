@@ -1,7 +1,22 @@
+import { PATHS } from "@/constants/Paths";
+import { AuthContext } from "@/context/auth/AuthContext";
 import { Unstable_Grid2 as Grid, Paper } from "@mui/material/";
-import { Outlet } from "react-router-dom";
+import { useContext } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 export const PublicLayout = () => {
+
+  const { state } = useContext(AuthContext);
+  const location = useLocation();
+
+  console.log('STATE', state);
+
+  if ( state.isAuthenticated ) {
+    console.log('HOLI');
+    return <Navigate to={PATHS.TODO} state={{ from: location }} replace/>
+  }
+
+
   return (
     <Paper elevation={3}>
         <Grid            

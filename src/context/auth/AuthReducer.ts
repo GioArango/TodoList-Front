@@ -6,18 +6,15 @@ export const authReducer = ( state: AuthState, action: AuthType ): AuthState => 
             return {
                 ...state,
                 email: action.payload.email,
-                isAuthenticated: true,
+                uid: action.payload.uid,
                 token: action.payload.token,
-                uid: action.payload.uid
+                isAuthenticated: true,
             }
         
         case "REGISTER":
             return {
                 ...state,
                 email: action.payload.email,
-                isAuthenticated: true,
-                token: action.payload.token,
-                uid: action.payload.uid
             }
 
         case "LOGOUT":
