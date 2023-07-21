@@ -8,15 +8,22 @@ import App from './App.tsx';
 import { AuthProvider } from './context/auth/AuthProvider.tsx';
 import { TodoProvider } from './context/todo/TodoProvider.tsx';
 import { HelperProvider } from './context/helper/HelperProvider.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const client = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
-  <HelperProvider>
-    <AuthProvider>
-      <TodoProvider>
-        <App />
-      </TodoProvider>
-    </AuthProvider>
-  </HelperProvider>
+  <QueryClientProvider client={ client }>
+    <ReactQueryDevtools />
+    <HelperProvider>
+      <AuthProvider>
+        <TodoProvider>
+          <App />
+        </TodoProvider>
+      </AuthProvider>
+    </HelperProvider>
+  </QueryClientProvider>
   // </React.StrictMode>,
 )
