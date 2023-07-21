@@ -1,14 +1,15 @@
-type Status = 'TODO' | 'INPROGRESS' | 'DONE';
+// type Status = 'TODO' | 'INPROGRESS' | 'DONE';
 
 export interface Todo {
-    id: string;
+    _id: string;
     title: string;
     description?: string;
     active: boolean;
-    startDate?: Date;
-    endDate?: Date;
-    timeSpent?: number;
-    status: Status;
+    startDate?: string;
+    endDate?: string;
+    timeSpend?: number;
+    status: string;
+    userId: string;
 }
 
 export interface TodoState {
@@ -16,4 +17,10 @@ export interface TodoState {
     todos: Todo[],
     completed: number;
     pending: number;
+}
+
+
+export interface Todos {
+    total: number;
+    todos: Todo[];
 }

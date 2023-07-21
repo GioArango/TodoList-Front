@@ -41,7 +41,7 @@ export const FormTodo = ({ handleCreateTodo }: Props) => {
     }
 
     return (
-        <Paper elevation={4} sx={{ width: '100%', display: 'flex', justifyContent: 'center', height: '40%' }}>
+        <Paper elevation={4} sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
             <Grid container gap={1} spacing={3} sx={{ width: '100%', my: 2 }}>
                 <form onSubmit={handleSubmit(onSubmitForm)} style={{ width: '100%' }}>
                     <Grid sm={12}>
