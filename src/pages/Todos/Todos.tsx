@@ -1,16 +1,36 @@
-import { BarNavigation, HeaderBar } from '@/components/shared';
+import { BarNavigation, HeaderBar, TodoCardSkeleton } from '@/components/shared';
+import { TodoContext } from '@/context/todo/TodoContext';
 import { useTodos } from '@/hooks/useTodos';
-import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import { Status, Todo as ITodo } from '@/models';
+import { Box, Unstable_Grid2 as Grid, Typography } from '@mui/material';
+import { useContext, useState } from 'react';
 import { FormTodo, SearchTodo, Todo } from './components';
 
 const Todos = () => {
 
-  const { todosQuery } = useTodos();
+  const [status, setStatus] = useState<Status>(Status.TODO);
+  const [editData, setEditData] = useState<ITodo | null>(null);
+  const { todosQuery } = useTodos(status);
+  const { createTodo, updateTodo } = useContext(TodoContext);
 
-  const handleCreateTodo = (data: {}) => {
-    console.log('FORM', data);
+  const selectStatus = ( statusSelected: Status ) => {
+    setStatus(statusSelected);
   }
+
+  const handleCreateTodo = ( data: ITodo ) => {
+    createTodo(data);
+    // selectStatus(Status.TODO);
+  }
+
+  const setEditInformation = (data: ITodo) => {
+    setEditData(data);
+  }
+
+  const handleEditTodo = ( data: ITodo ) => {
+    updateTodo(data);
+  }
+
+  
 
   return (
     <>
@@ -21,27 +41,37 @@ const Todos = () => {
         </Grid>
         <Grid container gap={2}>
           <Grid xs={12} md={5.92} sx={{ backgroundColor: '#E6E6E6', height: '100%' }}>
-            <BarNavigation />
+            <BarNavigation selectStatus={selectStatus} />
             <Grid container direction="column">
               {
-                todosQuery.isFetching
-                && <Typography>Loading...</Typography> // TODO: Hacer preloader con placeholders                 
+                todosQuery.isLoading
+                && <>
+                  <TodoCardSkeleton />
+                  <TodoCardSkeleton />
+                  <TodoCardSkeleton />
+                </>
               }
               {
-                todosQuery?.data?.total < 1
-                ? (<Typography variant='subtitle2'>Aún no tienes tareas creadas</Typography>) // TODO: Hacer preloader con placeholders
+                todosQuery?.data && todosQuery?.data?.total < 1
+                ? (<Typography variant='subtitle2' sx={{ p: 2 }}>Sin resultados</Typography>)
                 :
                 todosQuery.data?.todos?.map( todo => (
                   <Todo
                     key={todo._id} 
                     todo={todo}
+                    status={status}
+                    setDataTodo={setEditInformation}
                   />
                 ))
               }
             </Grid>
           </Grid>
           <Grid container xs={12} md={5.92} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <FormTodo handleCreateTodo={handleCreateTodo} />
+            <FormTodo 
+              handleCreateTodo={handleCreateTodo}
+              editData={editData}
+              handleEditTodo={handleEditTodo}
+            />
           </Grid>
         </Grid>
       </Box>
