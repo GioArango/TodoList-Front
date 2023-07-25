@@ -1,47 +1,84 @@
-import { Todo as TodoItem } from '@/models';
-import { Delete, Done, Edit, PlayArrow } from '@mui/icons-material';
-import { Card, CardContent, Unstable_Grid2 as Grid, IconButton, Tooltip, Typography } from '@mui/material';
-
+import { Status, Todo as ITodo } from '@/models';
+import { Clear, Delete, Done, Edit, Pause, PlayArrow } from '@mui/icons-material';
+import { Box, Card, CardContent, Chip, Unstable_Grid2 as Grid, IconButton, Tooltip, Typography } from '@mui/material';
 
 interface Props {
-    todo: TodoItem
+    todo: ITodo
+    status: Status
+    setDataTodo: ( data: ITodo ) => void
 }
-export const Todo = ({ todo }: Props) => {
+
+export const Todo = ({ todo, status, setDataTodo }: Props) => {
+
+    const editTodo = ( data: ITodo ) => {
+        console.log(data);
+        setDataTodo(data);
+    }
 
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', mx: 4, my: 0.5 }}>
             <CardContent sx={{ flex: '1 0 auto' }}>
-                <Typography component="div" variant="h5">
-                    { todo.title }
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                    { todo.description }
-                </Typography>
-            </CardContent>
-            {/* <Box sx={{ display: 'flex', alignSelf: 'end', p: 1 }}> */}
-                <Grid container sx={{ display: 'flex', alignSelf: 'end', p: 1 }}>
-                    <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
-                        <Tooltip title="Start" placement="top">
-                            <IconButton color='warning' sx={{ border: 1 }}><PlayArrow /></IconButton>
-                        </Tooltip>
+                <Grid container>
+                    <Grid xs={6} sm={6}>
+                        <Typography component="div" variant="h5">
+                            {todo.title}
+                        </Typography>
                     </Grid>
-                    <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
-                        <Tooltip title="Done" placement="top">
-                            <IconButton color='success' sx={{ border: 1 }}><Done /></IconButton>
-                        </Tooltip>
-                    </Grid>
-                    <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
-                        <Tooltip title="Edit" placement="top">
-                            <IconButton color='primary' sx={{ border: 1 }}><Edit /></IconButton>
-                        </Tooltip>
-                    </Grid>
-                    <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
-                        <Tooltip title="Delete" placement="top">
-                            <IconButton color='error' sx={{ border: 1 }}><Delete /></IconButton>
-                        </Tooltip>
+
+                    <Grid xs={6} sm={6}>
+                        <Box sx={{ display: 'flex', justifyContent: 'end' }}>
+                            <Chip 
+                                label={ todo.status } 
+                                size="small"
+                                variant='outlined'
+                                color='info'
+                                sx={{ fontSize: 9 }}
+                            />
+                        </Box>
                     </Grid>
                 </Grid>
-            {/* </Box> */}
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                    {todo.description}
+                </Typography>
+            </CardContent>
+            <Grid container sx={{ display: 'flex', alignSelf: 'end', p: 1 }}>
+                <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
+                    <Tooltip title={status === Status.INPROGRESS ? 'Pause' : 'Start'} placement="top">
+                        <IconButton color='warning' disabled={status === Status.DONE} sx={{ border: 1 }}>
+                            {
+                                status !== Status.INPROGRESS
+                                ? <PlayArrow />
+                                : <Pause />
+                            }
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
+                    <Tooltip title={status !== Status.DONE ? "Done" : "Undone"} placement="top">
+                        <IconButton color={status !== Status.DONE ? "success" : "error"} sx={{ border: 1 }}>
+                            {
+                                status !== Status.DONE
+                                ? <Done />
+                                : <Clear />
+                            }                            
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
+                    <Tooltip title="Edit" placement="top">
+                        <IconButton color='primary' sx={{ border: 1 }} onClick={() => editTodo(todo)}>
+                            <Edit />
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+                <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
+                    <Tooltip title="Delete" placement="top">
+                        <IconButton color='error' sx={{ border: 1 }}>
+                            <Delete />
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+            </Grid>
         </Card>
     )
 }
