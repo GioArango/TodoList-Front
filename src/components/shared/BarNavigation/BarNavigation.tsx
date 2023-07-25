@@ -1,11 +1,19 @@
+import { Status } from "@/models";
 import { List, PlaylistAddCheck, PlaylistPlay } from "@mui/icons-material";
 import { BottomNavigation, BottomNavigationAction, Box } from "@mui/material";
 import { useState } from "react";
 
-export const BarNavigation = () => {
-    const [value, setValue] = useState(0);
+interface Props {
+    selectStatus: (status: Status) => void
+}
 
-    console.log(value);
+export const BarNavigation = ({ selectStatus }: Props) => {
+    const [value, setValue] = useState(Status.TODO);
+
+    const setStatus = ( status: Status ) => {
+        setValue(status);
+        selectStatus(status)
+    }
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -14,12 +22,12 @@ export const BarNavigation = () => {
                 sx={{ backgroundColor: '#f2f2f2'}}
                 value={value}
                 onChange={(event, newValue) => {
-                    setValue(newValue);
+                    setStatus(newValue);
                 }}
             >
-                <BottomNavigationAction label="TODO" color="red" icon={<List />} />
-                <BottomNavigationAction label="IN PROGRESS" icon={<PlaylistPlay />} />
-                <BottomNavigationAction label="DONE" icon={<PlaylistAddCheck />} />
+                <BottomNavigationAction label="TODO" value="TODO" color="red" icon={<List />} />
+                <BottomNavigationAction label="IN PROGRESS" value="INPROGRESS" icon={<PlaylistPlay />} />
+                <BottomNavigationAction label="DONE" value="DONE" icon={<PlaylistAddCheck />} />
             </BottomNavigation>
         </Box>
     )
