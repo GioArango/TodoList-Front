@@ -1,22 +1,24 @@
-// type Status = 'TODO' | 'INPROGRESS' | 'DONE';
+export enum Status { 
+    TODO = 'TODO', 
+    INPROGRESS = 'INPROGRESS',
+    DONE= 'DONE'
+};
 
 export interface Todo {
-    _id: string;
+    _id?: string;
     title: string;
     description?: string;
     active: boolean;
-    startDate?: string;
-    endDate?: string;
+    startDate?: Date;
+    endDate?: Date;
     timeSpend?: number;
     status: string;
-    userId: string;
+    // userId: string;
 }
 
 export interface TodoState {
-    todoCount: number;
-    todos: Todo[],
-    completed: number;
-    pending: number;
+    total: number;
+    todos: Todo[]
 }
 
 
