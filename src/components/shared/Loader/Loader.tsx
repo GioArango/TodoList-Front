@@ -4,7 +4,7 @@ import styles from './Loader.module.css'
 import { useContext } from "react";
 
 export const Loader = () => {
-    
+
     const { state } = useContext(HelperContext);
 
     return (

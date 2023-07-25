@@ -9,10 +9,7 @@ export const PublicLayout = () => {
   const { state } = useContext(AuthContext);
   const location = useLocation();
 
-  console.log('STATE', state);
-
   if ( state.isAuthenticated ) {
-    console.log('HOLI');
     return <Navigate to={PATHS.TODO} state={{ from: location }} replace/>
   }
 
