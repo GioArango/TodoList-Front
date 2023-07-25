@@ -2,41 +2,64 @@ import { Box, Button, Unstable_Grid2 as Grid, Paper, TextField, Typography } fro
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Todo } from "@/models";
 
 interface Props {
-    handleCreateTodo: (formData: FormData) => void
+    handleCreateTodo: (newTodo: Todo) => void,
+    editData: Todo | null,
+    handleEditTodo: (editedTodo: Todo) => void
 }
 
 const schema = z.object({
-    taskName: z
+    title: z
         .string()
         .min(5, "The task name is required")
         .max(30, "the task name must be a maximum of 30 characters long."),
-    taskDescription: z
+    description: z
         .string()
-        .min(30, "The task description is required")
         .max(200, "the task name must be a maximum of 200 characters long."),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export const FormTodo = ({ handleCreateTodo }: Props) => {
+export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) => {
 
     const {
         register,
         reset,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
         defaultValues: {
-            taskName: '',
-            taskDescription: ''
+            title: '',
+            description: ''
         }
     });
 
+    if ( editData ) {
+        setValue('title', editData.title)
+        setValue('description', editData?.description)
+    }
+
     const onSubmitForm = ( formData: FormData ) => {
-        handleCreateTodo(formData);
+        if ( editData ) {
+            const editedTodo = {
+                ...editData,
+                title: formData.title,
+                description: formData.description,
+            }
+
+            handleEditTodo(editedTodo);
+        } else {
+            const newTodo = {
+                ...formData,
+                status: "TODO",
+                active: true,
+            }
+            handleCreateTodo(newTodo);
+        }
         reset();
     }
 
@@ -46,30 +69,36 @@ export const FormTodo = ({ handleCreateTodo }: Props) => {
                 <form onSubmit={handleSubmit(onSubmitForm)} style={{ width: '100%' }}>
                     <Grid sm={12}>
                         <TextField
-                            {...register('taskName')}
+                            {...register('title')}
                             label="Task name" 
                             variant="outlined" 
                             fullWidth 
-                            size="small" 
+                            size="small"
+                            InputLabelProps={{
+                                shrink: editData ? true : false,
+                            }}                            
                         />  
-                        <Typography>{errors.taskName?.message}</Typography>              
+                        <Typography>{errors.title?.message}</Typography>              
                     </Grid>
 
                     <Grid>
                         <TextField
-                            {...register('taskDescription')}
+                            {...register('description')}
                             id="outlined-multiline-static"
                             label="Description"
                             multiline
                             rows={3}
                             fullWidth
                             size="small"
+                            InputLabelProps={{
+                                shrink: editData ? true : false,
+                            }} 
                         />
-                        <Typography>{errors.taskDescription?.message}</Typography>      
+                        <Typography>{errors.description?.message}</Typography>      
                     </Grid>
 
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 1, mx: 1.5 }}>
-                        <Button variant="contained" type="submit">Create</Button>
+                        <Button variant="contained" type="submit">{ !editData ? 'Create' : 'Edit' }</Button>
                     </Box>
                 </form>
             </Grid>
