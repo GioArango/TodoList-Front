@@ -14,6 +14,12 @@ export const TodoReducer = (state: TodoState, action: ActionType): TodoState => 
                 todos: [...state.todos]
             }
 
+        case 'UPDATE_STATUS':
+            return {
+                ...state,
+                todosStatus: action.payload
+            }
+
         // case ACTION_TYPES.UPDATE_TODO:
 
         //     return {};

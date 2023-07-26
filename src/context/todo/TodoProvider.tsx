@@ -20,6 +20,7 @@ export const TodoProvider = ({ children }: Props) => {
         try {
             createTodoMutation.mutate(data);
             dispatch({ type: 'CREATE_TODO', payload: data})
+            dispatch({ type: 'UPDATE_STATUS', payload: Status.TODO})
           } catch (error) {
             console.log(error);
           }

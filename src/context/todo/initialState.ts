@@ -1,7 +1,8 @@
-import { TodoState } from "@/models";
+import { Status, TodoState } from "@/models";
 
 
 export const TODO_INITIAL_STATE: TodoState = {
+    todosStatus: Status.TODO,
     total: 0,
     todos: [
         {

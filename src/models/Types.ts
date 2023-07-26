@@ -1,8 +1,9 @@
-import { Alert, Todo, UserAuthenticated } from ".";
+import { Alert, Status, Todo, UserAuthenticated } from ".";
 
 export type ActionType = 
 | { type: 'SET_TODOS', payload: Todo  }
 | { type: 'CREATE_TODO', payload: Todo }
+| { type: 'UPDATE_STATUS', payload: Status }
 | { type: 'UPDATE_TODO', payload: { id: string } }
 | { type: 'DELETE_TODO', payload: { id: string } }
 

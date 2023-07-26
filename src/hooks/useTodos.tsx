@@ -1,5 +1,5 @@
 import { NewStatusDto, Status, Todo, Todos } from "@/models";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAxiosFetch } from "./useAxiosFetch";
 import { useContext } from "react";
 import { HelperContext } from "@/context/helper/HelperContext";
@@ -8,6 +8,7 @@ export const useTodos = (status: Status) => {
 
     const { todosApi } = useAxiosFetch();
     const { showLoader, hideLoader } = useContext(HelperContext);
+    const queryClient = useQueryClient()
 
     const getTodos = async (status: Status): Promise<Todos> => {
         showLoader();
@@ -68,7 +69,7 @@ export const useTodos = (status: Status) => {
             });
 
             console.log('RESPONSE UPDATE STATUS', data);
-            return data;
+            return {data, newStatus};
         } catch (error) {
             console.log(error);
         } finally {
@@ -94,8 +95,8 @@ export const useTodos = (status: Status) => {
     });
 
     const updateStatusMutation = useMutation(updateStatus, {
-        onSettled: () => {
-            todosQuery.refetch();
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos']})
         }
     });
 

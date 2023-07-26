@@ -17,6 +17,7 @@ export interface Todo {
 }
 
 export interface TodoState {
+    todosStatus: Status,
     total: number;
     todos: Todo[]
 }
