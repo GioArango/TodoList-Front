@@ -1,4 +1,4 @@
-import { Status, Todo, Todos } from "@/models";
+import { NewStatusDto, Status, Todo, Todos } from "@/models";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAxiosFetch } from "./useAxiosFetch";
 import { useContext } from "react";
@@ -57,6 +57,25 @@ export const useTodos = (status: Status) => {
         }
     }
 
+    const updateStatus = async ( dataNewStatus: NewStatusDto ) => {
+        try {
+            showLoader();
+            const { id, newStatus } = dataNewStatus;
+            const { data } = await todosApi.put(`/api/todos/${id}`, { status: newStatus }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log('RESPONSE UPDATE STATUS', data);
+            return data;
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoader();
+        }
+    }
+
     const todosQuery = useQuery(
         ['todos', { status }],
         () => getTodos(status)
@@ -66,17 +85,24 @@ export const useTodos = (status: Status) => {
         onSuccess: () => {
             todosQuery.refetch();
         }
-    })
+    });
 
     const editTodoMutation = useMutation(editTodo, {
         onSuccess: () => {
             todosQuery.refetch();
         }
-    })
+    });
+
+    const updateStatusMutation = useMutation(updateStatus, {
+        onSettled: () => {
+            todosQuery.refetch();
+        }
+    });
 
     return {
         todosQuery,
         createTodoMutation,
-        editTodoMutation
+        editTodoMutation,
+        updateStatusMutation
     }
 }

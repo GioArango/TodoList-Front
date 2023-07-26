@@ -26,3 +26,8 @@ export interface Todos {
     total: number;
     todos: Todo[];
 }
+
+export interface NewStatusDto {
+    id?: string,
+    newStatus: Status
+}

@@ -1,5 +1,5 @@
 import { useTodos } from '@/hooks/useTodos';
-import { Status, Todo } from '@/models';
+import { NewStatusDto, Status, Todo } from '@/models';
 import { useReducer } from 'react';
 import { TodoContext } from './TodoContext';
 import { TodoReducer } from './TodoReducer';
@@ -14,7 +14,7 @@ interface Props {
 export const TodoProvider = ({ children }: Props) => {
 
     const [state, dispatch] = useReducer( TodoReducer, TODO_INITIAL_STATE );
-    const { createTodoMutation, editTodoMutation } = useTodos(Status.TODO);
+    const { createTodoMutation, editTodoMutation, updateStatusMutation } = useTodos(Status.TODO);
 
     const createTodo = ( data: Todo ) => {
         try {
@@ -33,8 +33,16 @@ export const TodoProvider = ({ children }: Props) => {
         }
     }
 
+    const updateStatus = ( newStatus: NewStatusDto ) => {
+        try {
+            updateStatusMutation.mutate(newStatus);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <TodoContext.Provider value={{ state, createTodo, updateTodo }}>
+        <TodoContext.Provider value={{ state, createTodo, updateTodo, updateStatus }}>
             {children}
         </TodoContext.Provider>
     )

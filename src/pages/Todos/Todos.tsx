@@ -1,7 +1,7 @@
 import { BarNavigation, HeaderBar, TodoCardSkeleton } from '@/components/shared';
 import { TodoContext } from '@/context/todo/TodoContext';
 import { useTodos } from '@/hooks/useTodos';
-import { Status, Todo as ITodo } from '@/models';
+import { Status, Todo as ITodo, NewStatusDto } from '@/models';
 import { Box, Unstable_Grid2 as Grid, Typography } from '@mui/material';
 import { useContext, useState } from 'react';
 import { FormTodo, SearchTodo, Todo } from './components';
@@ -11,7 +11,7 @@ const Todos = () => {
   const [status, setStatus] = useState<Status>(Status.TODO);
   const [editData, setEditData] = useState<ITodo | null>(null);
   const { todosQuery } = useTodos(status);
-  const { createTodo, updateTodo } = useContext(TodoContext);
+  const { createTodo, updateTodo, updateStatus } = useContext(TodoContext);
 
   const selectStatus = ( statusSelected: Status ) => {
     setStatus(statusSelected);
@@ -28,6 +28,11 @@ const Todos = () => {
 
   const handleEditTodo = ( data: ITodo ) => {
     updateTodo(data);
+    setEditData(null);
+  }
+
+  const updateStatusTodo = ( data: NewStatusDto ) => {
+    updateStatus(data)
   }
 
   
@@ -61,6 +66,7 @@ const Todos = () => {
                     todo={todo}
                     status={status}
                     setDataTodo={setEditInformation}
+                    updateStatusTodo={updateStatusTodo}
                   />
                 ))
               }

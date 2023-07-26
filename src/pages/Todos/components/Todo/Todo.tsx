@@ -1,4 +1,4 @@
-import { Status, Todo as ITodo } from '@/models';
+import { Todo as ITodo, NewStatusDto, Status } from '@/models';
 import { Clear, Delete, Done, Edit, Pause, PlayArrow } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, Unstable_Grid2 as Grid, IconButton, Tooltip, Typography } from '@mui/material';
 
@@ -6,13 +6,19 @@ interface Props {
     todo: ITodo
     status: Status
     setDataTodo: ( data: ITodo ) => void
+    updateStatusTodo: ( data: NewStatusDto ) => void
 }
 
-export const Todo = ({ todo, status, setDataTodo }: Props) => {
+export const Todo = ({ todo, status, setDataTodo, updateStatusTodo }: Props) => {
 
     const editTodo = ( data: ITodo ) => {
         console.log(data);
         setDataTodo(data);
+    }
+
+    const updateStatus = ( newStatus: NewStatusDto ) => {
+        console.log(newStatus);
+        updateStatusTodo(newStatus)
     }
 
     return (
@@ -44,18 +50,24 @@ export const Todo = ({ todo, status, setDataTodo }: Props) => {
             <Grid container sx={{ display: 'flex', alignSelf: 'end', p: 1 }}>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title={status === Status.INPROGRESS ? 'Pause' : 'Start'} placement="top">
-                        <IconButton color='warning' disabled={status === Status.DONE} sx={{ border: 1 }}>
-                            {
-                                status !== Status.INPROGRESS
-                                ? <PlayArrow />
-                                : <Pause />
-                            }
-                        </IconButton>
+                        <span>
+                            <IconButton color='warning' disabled={status === Status.DONE} sx={{ border: 1 }}>
+                                {
+                                    status !== Status.INPROGRESS
+                                    ? <PlayArrow />
+                                    : <Pause />
+                                }
+                            </IconButton>
+                        </span>
                     </Tooltip>
                 </Grid>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title={status !== Status.DONE ? "Done" : "Undone"} placement="top">
-                        <IconButton color={status !== Status.DONE ? "success" : "error"} sx={{ border: 1 }}>
+                        <IconButton 
+                            color={status !== Status.DONE ? "success" : "error"} 
+                            sx={{ border: 1 }}
+                            onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.TODO ? Status.TODO : Status.DONE})}
+                        >
                             {
                                 status !== Status.DONE
                                 ? <Done />

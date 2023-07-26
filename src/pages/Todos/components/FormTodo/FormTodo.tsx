@@ -50,7 +50,9 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                 title: formData.title,
                 description: formData.description,
             }
-
+            reset();
+            setValue('title', '')
+            setValue('description', '')
             handleEditTodo(editedTodo);
         } else {
             const newTodo = {
@@ -58,9 +60,9 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                 status: "TODO",
                 active: true,
             }
+            reset();
             handleCreateTodo(newTodo);
         }
-        reset();
     }
 
     return (
