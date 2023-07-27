@@ -14,7 +14,7 @@ interface Props {
 export const TodoProvider = ({ children }: Props) => {
 
     const [state, dispatch] = useReducer( TodoReducer, TODO_INITIAL_STATE );
-    const { createTodoMutation, editTodoMutation, updateStatusMutation } = useTodos(Status.TODO);
+    const { createTodoMutation, editTodoMutation, updateStatusMutation, deleteTodoMutation } = useTodos(Status.TODO);
 
     const createTodo = ( data: Todo ) => {
         try {
@@ -42,8 +42,16 @@ export const TodoProvider = ({ children }: Props) => {
         }
     }
 
+    const deleteTodo = ( todoId: string ) => {
+        try {
+            deleteTodoMutation.mutate(todoId);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <TodoContext.Provider value={{ state, createTodo, updateTodo, updateStatus }}>
+        <TodoContext.Provider value={{ state, createTodo, updateTodo, updateStatus, deleteTodo }}>
             {children}
         </TodoContext.Provider>
     )

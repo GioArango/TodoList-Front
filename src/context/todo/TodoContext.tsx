@@ -6,6 +6,7 @@ export type TodoContextProps = {
     createTodo: ( data: Todo ) => void
     updateTodo: ( data: Todo ) => void
     updateStatus: ( data: NewStatusDto ) => void
+    deleteTodo: ( todoId: string ) => void
 }
 
 export const TodoContext = createContext<TodoContextProps>({} as TodoContextProps);

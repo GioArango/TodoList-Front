@@ -1,15 +1,15 @@
+import { HelperContext } from "@/context/helper/HelperContext";
 import { NewStatusDto, Status, Todo, Todos } from "@/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAxiosFetch } from "./useAxiosFetch";
 import { useContext } from "react";
-import { HelperContext } from "@/context/helper/HelperContext";
+import { useAxiosFetch } from "./useAxiosFetch";
 
 export const useTodos = (status: Status) => {
 
     const { todosApi } = useAxiosFetch();
     const { showLoader, hideLoader } = useContext(HelperContext);
-    const queryClient = useQueryClient()
-
+    const queryClient = useQueryClient();
+    
     const getTodos = async (status: Status): Promise<Todos> => {
         showLoader();
         const params = new URLSearchParams();
@@ -77,9 +77,31 @@ export const useTodos = (status: Status) => {
         }
     }
 
+    const deleteTodo = async ( todoId: string ) => {
+        try {
+            showLoader();
+
+            const { data } = await todosApi.delete(`/api/todos/${todoId}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            console.log('RESPONSE DELETE TODO', data);
+            return data;
+        } catch (error) {
+            console.log(error);
+        } finally {
+            hideLoader();
+        }
+    }
+
     const todosQuery = useQuery(
         ['todos', { status }],
-        () => getTodos(status)
+        () => getTodos(status), 
+        {
+            enabled: window.location.pathname !== '/login'
+        }
     );
 
     const createTodoMutation = useMutation(createTodo, {
@@ -100,10 +122,17 @@ export const useTodos = (status: Status) => {
         }
     });
 
+    const deleteTodoMutation = useMutation(deleteTodo, {
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos']})
+        }
+    });
+
     return {
         todosQuery,
         createTodoMutation,
         editTodoMutation,
-        updateStatusMutation
+        updateStatusMutation,
+        deleteTodoMutation
     }
 }

@@ -11,7 +11,7 @@ const Todos = () => {
   const [status, setStatus] = useState<Status>(Status.TODO);
   const [editData, setEditData] = useState<ITodo | null>(null);
   const { todosQuery } = useTodos(status);
-  const { createTodo, updateTodo, updateStatus } = useContext(TodoContext);
+  const { createTodo, updateTodo, updateStatus, deleteTodo } = useContext(TodoContext);
 
   const selectStatus = ( statusSelected: Status ) => {
     setStatus(statusSelected);
@@ -35,7 +35,9 @@ const Todos = () => {
     updateStatus(data)
   }
 
-  
+  const handleDeleteTodo = ( id: string ) => {
+    deleteTodo(id);
+  }
 
   return (
     <>
@@ -67,6 +69,7 @@ const Todos = () => {
                     status={status}
                     setDataTodo={setEditInformation}
                     updateStatusTodo={updateStatusTodo}
+                    handleDeleteTodo={handleDeleteTodo}
                   />
                 ))
               }

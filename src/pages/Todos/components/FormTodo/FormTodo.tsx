@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Todo } from "@/models";
+import { useState } from "react";
 
 interface Props {
     handleCreateTodo: (newTodo: Todo) => void,
@@ -24,11 +25,15 @@ type FormData = z.infer<typeof schema>;
 
 export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) => {
 
+    const [titleIsFocused, setTitleIsFocused] = useState(false);
+    const [desciptionIsFocused, setDesciptionIsFocused] = useState(false);
+
     const {
         register,
         reset,
         handleSubmit,
         setValue,
+        getValues,
         formState: { errors },
     } = useForm<FormData>({
         resolver: zodResolver(schema),
@@ -40,7 +45,7 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
 
     if ( editData ) {
         setValue('title', editData.title)
-        setValue('description', editData?.description)
+        setValue('description', editData?.description!)
     }
 
     const onSubmitForm = ( formData: FormData ) => {
@@ -77,8 +82,10 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                             fullWidth 
                             size="small"
                             InputLabelProps={{
-                                shrink: editData ? true : false,
-                            }}                            
+                                shrink: (editData || titleIsFocused || getValues('title')) ? true : false,
+                            }}
+                            onFocus={() => setTitleIsFocused(true)}
+                            onBlur={() => setTitleIsFocused(false)}
                         />  
                         <Typography>{errors.title?.message}</Typography>              
                     </Grid>
@@ -93,8 +100,10 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                             fullWidth
                             size="small"
                             InputLabelProps={{
-                                shrink: editData ? true : false,
-                            }} 
+                                shrink: (editData || desciptionIsFocused || getValues('description')) ? true : false,
+                            }}
+                            onFocus={() => setDesciptionIsFocused(true)}
+                            onBlur={() => setDesciptionIsFocused(false)}
                         />
                         <Typography>{errors.description?.message}</Typography>      
                     </Grid>

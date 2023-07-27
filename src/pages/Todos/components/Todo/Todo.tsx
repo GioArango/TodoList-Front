@@ -7,18 +7,27 @@ interface Props {
     status: Status
     setDataTodo: ( data: ITodo ) => void
     updateStatusTodo: ( data: NewStatusDto ) => void
+    handleDeleteTodo: ( todoId: string ) => void
 }
 
-export const Todo = ({ todo, status, setDataTodo, updateStatusTodo }: Props) => {
+export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDeleteTodo }: Props) => {
 
     const editTodo = ( data: ITodo ) => {
-        console.log(data);
         setDataTodo(data);
     }
 
     const updateStatus = ( newStatus: NewStatusDto ) => {
-        console.log(newStatus);
+        console.log('OE', newStatus);
         updateStatusTodo(newStatus)
+    }
+
+    const deleteTodo = ( todoId: string ) => {
+        handleDeleteTodo(todoId)
+    }
+
+    const validateInprogressStatus = ( todo: ITodo, currentStatus: Status ) => {
+        // onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
+
     }
 
     return (
@@ -51,7 +60,13 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo }: Props) => 
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title={status === Status.INPROGRESS ? 'Pause' : 'Start'} placement="top">
                         <span>
-                            <IconButton color='warning' disabled={status === Status.DONE} sx={{ border: 1 }}>
+                            <IconButton 
+                                color='warning' 
+                                disabled={status === Status.DONE} 
+                                sx={{ border: 1 }}
+                                // onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
+                                onClick={() => validateInprogressStatus(todo, status)}
+                            >
                                 {
                                     status !== Status.INPROGRESS
                                     ? <PlayArrow />
@@ -66,7 +81,7 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo }: Props) => 
                         <IconButton 
                             color={status !== Status.DONE ? "success" : "error"} 
                             sx={{ border: 1 }}
-                            onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.TODO ? Status.TODO : Status.DONE})}
+                            onClick={() => updateStatus({id: todo._id, newStatus: (status !== Status.TODO && status !== Status.INPROGRESS) ? Status.TODO : Status.DONE})}
                         >
                             {
                                 status !== Status.DONE
@@ -85,7 +100,11 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo }: Props) => 
                 </Grid>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title="Delete" placement="top">
-                        <IconButton color='error' sx={{ border: 1 }}>
+                        <IconButton 
+                            color='error' 
+                            sx={{ border: 1 }}
+                            onClick={() => deleteTodo(todo._id!)}
+                        >
                             <Delete />
                         </IconButton>
                     </Tooltip>
