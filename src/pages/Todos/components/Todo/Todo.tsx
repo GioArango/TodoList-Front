@@ -5,30 +5,32 @@ import { Box, Card, CardContent, Chip, Unstable_Grid2 as Grid, IconButton, Toolt
 interface Props {
     todo: ITodo
     status: Status
-    setDataTodo: ( data: ITodo ) => void
-    updateStatusTodo: ( data: NewStatusDto ) => void
-    handleDeleteTodo: ( todoId: string ) => void
+    setDataTodo: (data: ITodo) => void
+    updateStatusTodo: (data: NewStatusDto) => void
+    handleDeleteTodo: (todoId: string) => void
 }
 
 export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDeleteTodo }: Props) => {
 
-    const editTodo = ( data: ITodo ) => {
+    const editTodo = (data: ITodo) => {
         setDataTodo(data);
     }
 
-    const updateStatus = ( newStatus: NewStatusDto ) => {
+    const updateStatus = (newStatus: NewStatusDto) => {
         console.log('OE', newStatus);
         updateStatusTodo(newStatus)
     }
 
-    const deleteTodo = ( todoId: string ) => {
+    const deleteTodo = (todoId: string) => {
         handleDeleteTodo(todoId)
     }
 
-    const validateInprogressStatus = ( todo: ITodo, currentStatus: Status ) => {
-        // onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
+    // const calculateTimeSpend = () => {
+    //     const currentDate = new Date();
+    //     const creationDate = todo.startDate
 
-    }
+    //     console.log('DATES', currentDate, creationDate);
+    // }
 
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', mx: 4, my: 0.5 }}>
@@ -42,13 +44,18 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
 
                     <Grid xs={6} sm={6}>
                         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
-                            <Chip 
-                                label={ todo.status } 
+                            <Chip
+                                label={todo.status}
                                 size="small"
                                 variant='outlined'
                                 color='info'
                                 sx={{ fontSize: 9 }}
                             />
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'end', mx: 0.3, my: 1 }}>
+                            <Typography variant="caption" color="text.secondary" component="div">
+                                Time spend: {todo.timeSpend}
+                            </Typography>
                         </Box>
                     </Grid>
                 </Grid>
@@ -60,17 +67,16 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title={status === Status.INPROGRESS ? 'Pause' : 'Start'} placement="top">
                         <span>
-                            <IconButton 
-                                color='warning' 
-                                disabled={status === Status.DONE} 
+                            <IconButton
+                                color='warning'
+                                disabled={status === Status.DONE}
                                 sx={{ border: 1 }}
-                                // onClick={() => updateStatus({id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
-                                onClick={() => validateInprogressStatus(todo, status)}
+                                onClick={() => updateStatus({ id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
                             >
                                 {
                                     status !== Status.INPROGRESS
-                                    ? <PlayArrow />
-                                    : <Pause />
+                                        ? <PlayArrow />
+                                        : <Pause />
                                 }
                             </IconButton>
                         </span>
@@ -78,30 +84,37 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
                 </Grid>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title={status !== Status.DONE ? "Done" : "Undone"} placement="top">
-                        <IconButton 
-                            color={status !== Status.DONE ? "success" : "error"} 
+                        <IconButton
+                            color={status !== Status.DONE ? "success" : "error"}
                             sx={{ border: 1 }}
-                            onClick={() => updateStatus({id: todo._id, newStatus: (status !== Status.TODO && status !== Status.INPROGRESS) ? Status.TODO : Status.DONE})}
+                            onClick={() => updateStatus({ id: todo._id, newStatus: (status !== Status.TODO && status !== Status.INPROGRESS) ? Status.TODO : Status.DONE })}
                         >
                             {
                                 status !== Status.DONE
-                                ? <Done />
-                                : <Clear />
-                            }                            
+                                    ? <Done />
+                                    : <Clear />
+                            }
                         </IconButton>
                     </Tooltip>
                 </Grid>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title="Edit" placement="top">
-                        <IconButton color='primary' sx={{ border: 1 }} onClick={() => editTodo(todo)}>
-                            <Edit />
-                        </IconButton>
+                        <span>
+                            <IconButton
+                                color='primary'
+                                sx={{ border: 1 }}
+                                onClick={() => editTodo(todo)}
+                                disabled={status === Status.DONE}
+                            >
+                                <Edit />
+                            </IconButton>
+                        </span>
                     </Tooltip>
                 </Grid>
                 <Grid xs={3} sm={3} sx={{ px: 0.5 }}>
                     <Tooltip title="Delete" placement="top">
-                        <IconButton 
-                            color='error' 
+                        <IconButton
+                            color='error'
                             sx={{ border: 1 }}
                             onClick={() => deleteTodo(todo._id!)}
                         >

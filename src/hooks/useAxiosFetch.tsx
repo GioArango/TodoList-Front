@@ -23,10 +23,11 @@ export const useAxiosFetch = () => {
         (error) => {
             if ( error.response && error.response.status === 401 ) {
                 window.alert('Session expired');
+                hideLoader();
                 logOut();
             }
 
-            hideLoader()
+            hideLoader();
 
             return Promise.reject(error);
         }

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Todo } from "@/models";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
     handleCreateTodo: (newTodo: Todo) => void,
@@ -43,10 +43,16 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
         }
     });
 
-    if ( editData ) {
-        setValue('title', editData.title)
+    // if ( editData ) {
+    //     setValue('title', editData.title)
+    //     setValue('description', editData?.description!)
+    // }
+
+    useEffect(() => {
+        setValue('title', editData?.title!)
         setValue('description', editData?.description!)
-    }
+    }, [editData])
+    
 
     const onSubmitForm = ( formData: FormData ) => {
         if ( editData ) {
@@ -56,8 +62,8 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                 description: formData.description,
             }
             reset();
-            setValue('title', '')
-            setValue('description', '')
+            // setValue('title', '')
+            // setValue('description', '')
             handleEditTodo(editedTodo);
         } else {
             const newTodo = {
@@ -82,7 +88,7 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                             fullWidth 
                             size="small"
                             InputLabelProps={{
-                                shrink: (editData || titleIsFocused || getValues('title')) ? true : false,
+                                shrink: (editData?.title || titleIsFocused || getValues('title')) ? true : false,
                             }}
                             onFocus={() => setTitleIsFocused(true)}
                             onBlur={() => setTitleIsFocused(false)}
@@ -100,7 +106,7 @@ export const FormTodo = ({ handleCreateTodo, editData, handleEditTodo }: Props) 
                             fullWidth
                             size="small"
                             InputLabelProps={{
-                                shrink: (editData || desciptionIsFocused || getValues('description')) ? true : false,
+                                shrink: (editData?.description || desciptionIsFocused || getValues('description')) ? true : false,
                             }}
                             onFocus={() => setDesciptionIsFocused(true)}
                             onBlur={() => setDesciptionIsFocused(false)}

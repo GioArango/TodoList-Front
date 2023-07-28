@@ -106,13 +106,13 @@ export const useTodos = (status: Status) => {
 
     const createTodoMutation = useMutation(createTodo, {
         onSuccess: () => {
-            todosQuery.refetch();
+            queryClient.invalidateQueries({ queryKey: ['todos']})
         }
     });
 
     const editTodoMutation = useMutation(editTodo, {
         onSuccess: () => {
-            todosQuery.refetch();
+            queryClient.invalidateQueries({ queryKey: ['todos']})
         }
     });
 

@@ -51,7 +51,7 @@ const Todos = () => {
             <BarNavigation selectStatus={selectStatus} />
             <Grid container direction="column">
               {
-                todosQuery.isLoading
+                todosQuery.isLoading || todosQuery.isFetching
                 && <>
                   <TodoCardSkeleton />
                   <TodoCardSkeleton />
