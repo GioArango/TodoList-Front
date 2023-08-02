@@ -1,4 +1,5 @@
 import { HelperContext } from "@/context/helper/HelperContext";
+import { TODO_INITIAL_STATE } from "@/context/todo/initialState";
 import { NewStatusDto, Status, Todo, Todos } from "@/models";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -11,14 +12,21 @@ export const useTodos = (status: Status) => {
     const queryClient = useQueryClient();
     
     const getTodos = async (status: Status): Promise<Todos> => {
-        showLoader();
-        const params = new URLSearchParams();
-
-        if (status) params.append('status', status);
-        const { data } = await todosApi?.get('/api/todos', { params });
-        hideLoader();
-        
-        return data;
+        try {
+            showLoader();
+            const params = new URLSearchParams();
+    
+            if (status) params.append('status', status);
+            const { data } = await todosApi?.get('/api/todos', { params });
+            hideLoader();
+            
+            return data;            
+        } catch (error) {
+            console.log(error);
+            return TODO_INITIAL_STATE;
+        } finally {
+            hideLoader();
+        }
     }
 
     const createTodo = async (newTodo: Todo) => {
@@ -61,8 +69,24 @@ export const useTodos = (status: Status) => {
     const updateStatus = async ( dataNewStatus: NewStatusDto ) => {
         try {
             showLoader();
-            const { id, newStatus } = dataNewStatus;
-            const { data } = await todosApi.put(`/api/todos/${id}`, { status: newStatus }, {
+            const { id, newStatus, dateStatus } = dataNewStatus;
+
+            const query = {
+                status: newStatus
+            }
+
+            if ( newStatus === Status.INPROGRESS ) {
+                query.startDate = dateStatus;
+                query.endDate = dateStatus;
+            } else if ( newStatus === Status.DONE ){
+                query.endDate = dateStatus;
+            } else if ( newStatus === Status.TODO ) {
+                query.startDate = new Date();
+                query.endDate =  new Date();
+            }
+
+            console.log('QUERY', newStatus, query);
+            const { data } = await todosApi.put(`/api/todos/${id}`, query, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

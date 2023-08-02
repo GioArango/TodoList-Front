@@ -30,5 +30,6 @@ export interface Todos {
 
 export interface NewStatusDto {
     id?: string,
-    newStatus: Status
+    newStatus: Status,
+    dateStatus?: Date
 }

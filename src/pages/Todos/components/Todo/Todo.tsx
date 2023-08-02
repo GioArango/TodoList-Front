@@ -1,6 +1,9 @@
+import { ConvertMinutesInHours, formatSeconds } from '@/helpers';
 import { Todo as ITodo, NewStatusDto, Status } from '@/models';
 import { Clear, Delete, Done, Edit, Pause, PlayArrow } from '@mui/icons-material';
 import { Box, Card, CardContent, Chip, Unstable_Grid2 as Grid, IconButton, Tooltip, Typography } from '@mui/material';
+import { differenceInMinutes, differenceInSeconds } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 interface Props {
     todo: ITodo
@@ -11,6 +14,9 @@ interface Props {
 }
 
 export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDeleteTodo }: Props) => {
+
+    const [timeSpendTodo, setTimeSpendTodo] = useState('');
+    const [currentTime, setCurrentTime] = useState(0);
 
     const editTodo = (data: ITodo) => {
         setDataTodo(data);
@@ -25,12 +31,60 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
         handleDeleteTodo(todoId)
     }
 
-    // const calculateTimeSpend = () => {
-    //     const currentDate = new Date();
-    //     const creationDate = todo.startDate
+    const calculateTimeSpend = () => {
 
-    //     console.log('DATES', currentDate, creationDate);
+        const endDate = todo?.endDate;
+        const creationDate = todo?.startDate;
+
+        const date1 = new Date(endDate!);
+        const date2 = new Date(creationDate!);
+
+        const diffInMinutes = differenceInMinutes(date1, date2);
+
+        if (diffInMinutes >= 60) {
+            const hours = `${ConvertMinutesInHours(diffInMinutes)} hrs`;
+            setTimeSpendTodo(hours);
+        } else {
+            const minutes = `${diffInMinutes} mins`
+            setTimeSpendTodo(minutes);
+        }
+
+    }
+
+    // const calculateCurrentTime = () => {
+
     // }
+
+    useEffect(() => {
+        if (status === Status.DONE) {
+            calculateTimeSpend();
+        }
+    }, [])
+
+    useEffect(() => {
+        if (status === Status.INPROGRESS) {
+            const currentDate = new Date();
+            const startDateTodo = todo.startDate;
+
+            const date1 = new Date(currentDate);
+            const date2 = new Date(startDateTodo!);
+
+            let currentTimeInSeconds = differenceInSeconds(date1, date2);
+
+            const interval = setInterval(() => {
+                currentTimeInSeconds++
+                setCurrentTime(currentTimeInSeconds);
+            }, 1000);
+
+            return () => clearInterval(interval);
+
+        }
+    }, [currentTime]);
+
+
+
+    // DONE: calcular diferencia de hora finalizacion y hora inicio para asignarlo al timeSpend solo con estado TODO
+    // DONE: en estado in progress calcular los segundos de ejecución de la tarea -> fecha actual - fecha inicio
 
     return (
         <Card sx={{ display: 'flex', flexDirection: 'column', mx: 4, my: 0.5 }}>
@@ -54,7 +108,7 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'end', mx: 0.3, my: 1 }}>
                             <Typography variant="caption" color="text.secondary" component="div">
-                                Time spend: {todo.timeSpend}
+                                {status === Status.DONE ? `Time spend: ${timeSpendTodo}` : status === Status.INPROGRESS && `Current time: ${formatSeconds(currentTime)}`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -71,7 +125,7 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
                                 color='warning'
                                 disabled={status === Status.DONE}
                                 sx={{ border: 1 }}
-                                onClick={() => updateStatus({ id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE })}
+                                onClick={() => updateStatus({ id: todo._id, newStatus: status !== Status.DONE ? Status.INPROGRESS : Status.DONE, dateStatus: new Date() })}
                             >
                                 {
                                     status !== Status.INPROGRESS
@@ -87,7 +141,7 @@ export const Todo = ({ todo, status, setDataTodo, updateStatusTodo, handleDelete
                         <IconButton
                             color={status !== Status.DONE ? "success" : "error"}
                             sx={{ border: 1 }}
-                            onClick={() => updateStatus({ id: todo._id, newStatus: (status !== Status.TODO && status !== Status.INPROGRESS) ? Status.TODO : Status.DONE })}
+                            onClick={() => updateStatus({ id: todo._id, newStatus: (status !== Status.TODO && status !== Status.INPROGRESS) ? Status.TODO : Status.DONE, dateStatus: new Date() })}
                         >
                             {
                                 status !== Status.DONE
